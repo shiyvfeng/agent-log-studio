@@ -13,7 +13,7 @@ npm ci
 npm run dev
 ```
 
-访问 <http://127.0.0.1:4320>，macOS 也可以双击 `启动 Agent Log Studio.command`。本次迁入已复制本机依赖，可直接启动；在新机器或切换平台时运行 `npm ci`。
+访问 <http://127.0.0.1:4320>，macOS 也可以双击 `启动 Agent Log Studio.command`。首次使用或切换平台时先运行 `npm ci`。
 
 默认只监听本机。用 `PORT` 更改端口，Chrome 不在常见路径时设置 `CHROME_PATH`。草稿保存在当前浏览器、当前站点的本地存储中，键名为 `agent-log-studio-v1`。
 
@@ -89,4 +89,4 @@ npm run verify:ui
 | `server.mjs`、`export.html` | 本地服务、逐帧渲染、编码与下载 |
 | `tests/`、`scripts/verify-*.mjs` | 模型测试、播放和界面验证 |
 
-添加内置示例时，在 `public/samples/` 放入 CSV，然后更新 `src/samples.js`。迁移范围见 [迁移说明](docs/迁移说明.md)。
+添加内置示例时，在 `public/samples/` 放入 CSV，然后更新 `src/samples.js`。项目范围见 [项目说明](docs/项目说明.md)。

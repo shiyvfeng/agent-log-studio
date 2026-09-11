@@ -1,0 +1,11 @@
+<!doctype html><html><head><meta charset="UTF-8"></head><body style="margin:0;background:transparent"><canvas id="export"></canvas><script type="module">
+import {renderFrame} from './src/render.js';
+window.renderExport=(rows,settings,time,background='transparent')=>{
+ const canvas=document.getElementById('export');renderFrame(canvas,rows,settings,time);
+ if(background==='black'){
+   const ctx=canvas.getContext('2d');ctx.save();ctx.globalCompositeOperation='destination-over';ctx.fillStyle='#000';ctx.fillRect(0,0,canvas.width,canvas.height);ctx.restore();
+ }
+ return canvas.toDataURL('image/png').split(',')[1];
+};
+window.exportReady=true;
+</script></body></html>

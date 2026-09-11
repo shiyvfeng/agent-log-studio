@@ -1,0 +1,11 @@
+import test from 'node:test';import assert from 'node:assert/strict';import {readFile} from 'node:fs/promises';
+import {readCSV,writeCSV,compressWaits,validateRows,validateSettings,defaults,groupStates,endTime} from '../src/model.js';
+const scene1=readCSV(await readFile('public/samples/basic.csv','utf8'));
+const scene2=readCSV(await readFile('public/samples/workflow-agent.csv','utf8'));
+test('generic samples contain bilingual copy and scene-local timing',()=>{assert.equal(scene1.length,6);assert.equal(scene2.length,10);assert.equal(scene1.at(-1).time,13);assert.equal(scene2.at(-1).time,13);assert.ok([...scene1,...scene2].every(r=>r.en&&r.zh));});
+test('CSV roundtrip preserves commas, bilingual text, quotes and embedded newlines',()=>{const rows=structuredClone(scene1);rows[0].en='A "quoted", value\nsecond line';assert.deepEqual(readCSV(writeCSV(rows)),rows);});
+test('English-only timestamp CSV normalizes midnight and preserves equal-time ordering',()=>{const rows=readCSV('timestamp,level,en\n23:59:59,thinking,Start\n00:00:00,action,Next\n00:00:00,thinking,Plan');assert.deepEqual(rows.map(r=>r.time),[0,1,1]);assert.equal(rows[1].parent,rows[0].id);});
+test('reject malformed, orphan, empty, unordered and invalid clock input',()=>{for(const csv of ['time,level,en\n0,action,Oops','time,level,en\n0,thinking,"oops','time,level,en\n0,thinking,','time,level,en\n1,thinking,One\n0,action,Two','timestamp,level,en\n25:00:00,thinking,Oops'])assert.throws(()=>readCSV(csv));});
+test('compression only modifies playback seconds, keeps copy and source timestamps',()=>{const edit=compressWaits(scene1);assert.equal(edit.at(-1).time,8);edit.forEach((r,i)=>{assert.equal(r.timestamp,scene1[i].timestamp);assert.equal(r.en,scene1[i].en);if(i)assert.ok(r.time-edit[i-1].time<=3);});});
+test('thought remains active through its last action appearance',()=>{assert.equal(groupStates(scene1,0)[0].complete,false);assert.equal(groupStates(scene1,1.7)[0].complete,true);assert.equal(groupStates(scene1,0)[0].visible.length,1);});
+test('reject broken grouping and unsupported canvas dimensions',()=>{assert.throws(()=>validateRows([{...scene1[1],parent:'missing'}]));assert.throws(()=>validateSettings({...defaults,width:321}));assert.equal(endTime(scene1,defaults)/2,8);});

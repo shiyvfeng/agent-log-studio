@@ -1,0 +1,7 @@
+﻿id,scene,level,parent,timestamp,time,en,zh,shot,type
+basic-001,basic,thinking,,09:00:00,0,Planning the task.,正在规划任务。,,
+basic-002,basic,action,basic-001,09:00:00,0,Read the input.,读取输入。,,
+basic-003,basic,thinking,,09:00:03,3,Preparing the result.,正在准备结果。,,
+basic-004,basic,action,basic-003,09:00:04,4,Process the input.,处理输入。,,
+basic-005,basic,thinking,,09:00:12,12,Checking the result.,正在检查结果。,,
+basic-006,basic,action,basic-005,09:00:13,13,Save the output.,保存输出。,,

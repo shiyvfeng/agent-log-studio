@@ -1,0 +1,13 @@
+﻿id,scene,level,parent,timestamp,time,en,zh,shot,type
+research-001,research,action,,09:00:00,0,[feed] Request received: compare three storage options.,[feed] 收到请求：比较三种存储方案。,,feed
+research-002,research,action,research-001,09:00:01,1,[action] Load the project requirements.,[action] 读取项目需求。,,action
+research-003,research,action,research-001,09:00:02,2,[feed] Constraints loaded: local use and offline access.,[feed] 已读取约束：本地使用、支持离线。,,feed
+research-004,research,thinking,,09:00:03,3,"Thinking… Compare reliability, cost and setup effort.",[think] 从可靠性、成本和配置工作量进行比较。,,think
+research-005,research,action,research-004,09:00:04,4,[action] Search the reference collection.,[action] 检索参考资料。,,action
+research-006,research,action,research-004,09:00:06,6,[feed] Three matching references found.,[feed] 找到三份相关资料。,,feed
+research-007,research,thinking,,09:00:08,8,Thinking… Organize the evidence into a comparison.,[think] 将资料整理为方案对比。,,think
+research-008,research,action,research-007,09:00:09,9,[instruction] Ask the summary worker to draft the comparison.,[instruction] 指派总结助手起草对比内容。,,instruction
+research-009,research,action,research-007,09:00:10,10,[action] Generate the comparison table.,[action] 生成对比表。,,action
+research-010,research,action,research-007,09:00:12,12,[feed] Draft ready with source references.,[feed] 草稿已完成，包含来源引用。,,feed
+research-011,research,thinking,,09:00:14,14,Thinking… Check the draft against the original constraints.,[think] 根据原始约束检查草稿。,,think
+research-012,research,action,research-011,09:00:15,15,[feed] Review complete. The comparison is ready.,[feed] 检查完成，对比内容已就绪。,,feed

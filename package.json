@@ -1,0 +1,23 @@
+{
+  "name": "agent-log-studio",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "node server.mjs",
+    "start": "node server.mjs --production",
+    "build": "vite build",
+    "test": "node --test tests/*.test.mjs",
+    "verify:ui": "node scripts/verify-ui.mjs",
+    "verify:playback": "node scripts/verify-playback.mjs"
+  },
+  "dependencies": {
+    "ffmpeg-static": "^5.2.0",
+    "playwright-core": "^1.55.0",
+    "vite": "^7.1.0"
+  },
+  "description": "A local editor for agent activity logs, animated previews and video exports.",
+  "engines": {
+    "node": "^20.19.0 || >=22.12.0"
+  }
+}

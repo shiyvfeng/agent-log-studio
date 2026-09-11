@@ -1,0 +1,11 @@
+﻿id,scene,level,parent,timestamp,time,en,zh,shot,type
+workflow-001,workflow,thinking,,09:00:00,0,Thinking… Break the request into a short workflow.,[think] 将请求拆分为简短的工作流。,,think
+workflow-002,workflow,action,workflow-001,09:00:00,0,[action] Load the task context.,[action] 读取任务上下文。,,action
+workflow-003,workflow,action,workflow-001,09:00:01,1,[feed] Context loaded: prepare a local report.,[feed] 上下文已读取：准备一份本地报告。,,feed
+workflow-004,workflow,action,workflow-001,09:00:03,3,[instruction] Collect the input records.,[instruction] 收集输入记录。,,instruction
+workflow-005,workflow,action,workflow-001,09:00:04,4,[action] Validate the input fields.,[action] 校验输入字段。,,action
+workflow-006,workflow,action,workflow-001,09:00:06,6,[feed] All required fields are present.,[feed] 所有必填字段均已提供。,,feed
+workflow-007,workflow,thinking,,09:00:08,8,Thinking… Build the report from the validated records.,[think] 根据已校验的记录生成报告。,,think
+workflow-008,workflow,action,workflow-007,09:00:09,9,[action] Render the report template.,[action] 渲染报告模板。,,action
+workflow-009,workflow,action,workflow-007,09:00:12,12,[feed] Report saved to the workspace.,[feed] 报告已保存到工作区。,,feed
+workflow-010,workflow,thinking,,09:00:13,13,Thinking… The workflow is complete.,[think] 工作流已完成。,,think

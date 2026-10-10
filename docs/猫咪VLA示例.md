@@ -17,7 +17,7 @@
 
 设计参考 [Vercel Geist 品牌规范](https://vercel.com/geist/brands) 及其官方字体说明。界面只保留视频、日志、当前口令和阶段说明四个层级，使用纯白背景、黑灰文字、1 像素边框、清晰对齐和留白。
 
-视频区域为 432 × 768，日志区域为 1152 × 768，两者保持独立比例。日志使用中性配色，合成时消除残余色彩；动态文案沿用原时间线。界面英文排版使用官方 Geist Sans / Geist Mono，中文回退至 Noto Sans CJK。字体与官方 OFL 许可位于 `public/fonts/geist/`，来源版本记录在该目录的 README 中。
+视频区域为 432 × 768，日志区域为 1152 × 768，两者保持独立比例。日志使用中性配色，动态文案沿用原时间线。界面英文排版使用官方 Geist Sans / Geist Mono，中文回退至系统中文字体。字体与官方 OFL 许可位于 `public/fonts/geist/`，来源版本记录在该目录的 README 中。
 
 ## 对齐依据
 
@@ -45,30 +45,26 @@
 
 ## 复现
 
-安装依赖，确认 Chrome / Chromium、系统 FFmpeg、ffprobe、curl 和中文字体可用，启动服务：
+安装依赖，确认 Chrome / Chromium、curl 和系统中文字体可用，启动服务。FFmpeg 由依赖自带：
 
 ```sh
 npm ci
 npm run dev
 ```
 
-另一个终端运行：
+打开 <http://127.0.0.1:4320>，在「视频合成」点击「载入猫咪完整示例」。原视频、44 条日志、25 段阶段字幕、标题与署名会一起载入，可以直接预览和导出 45.6 秒成片，也可以先编辑日志和字幕。不需要运行额外合成命令。
+
+命令行也可复现。另一个终端运行：
 
 ```sh
-node scripts/make-cat-vla.mjs
+npm run example:cat-vla
 ```
 
-脚本校验素材摘要与音轨，读取 `public/samples/cat-vla.csv`，请求项目导出接口生成日志层，再合成最终视频。产物包括素材、CSV 副本、设置、日志层、成片、封面和验证记录。
+脚本读取同一份 `public/samples/cat-vla.csv` 和 `src/cat-vla.js`，调用与网页相同的素材准备和完整视频导出接口。产物包括成片、CSV 副本、设置、素材来源与导出记录。素材预览文件位于 `output/media/`，网页导出文件位于 `output/exports/`。
 
-使用其他端口时设置 `AGENT_LOG_STUDIO_TEST_URL`。通过 `CHROME_PATH` 指定浏览器，`CAT_VLA_FONT` 指定中文字体文件，`CAT_VLA_FFMPEG` 指定 FFmpeg。默认中文字体为 `/usr/share/fonts/opentype/noto/NotoSansCJK-Regular.ttc`。
+使用其他端口时设置 `AGENT_LOG_STUDIO_TEST_URL`，通过 `CHROME_PATH` 指定浏览器。首次载入需要网络；已有原素材缓存时先验证 SHA-256 后复用。素材会准备成 H.264 供浏览器播放，原声为 AAC 时直接复制。系统中文字体用于网页和导出的相同 Canvas 排版。
 
-只调整合成版式或阶段字幕时，可复用已验证的日志层：
-
-```sh
-node scripts/make-cat-vla.mjs --compose-only
-```
-
-如果 CSV、渲染设置、帧率或时长变化，脚本会拒绝复用旧日志层，要求重新导出。
+旧参数 `--compose-only` 仍可运行，但现在会调用共享接口重新生成完整成片。
 
 ## 在编辑器中使用
 

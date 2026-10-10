@@ -1,7 +1,11 @@
-<!doctype html><html lang="zh-CN"><head><meta charset="UTF-8"></head><body style="margin:0;background:transparent"><canvas id="export"></canvas><script type="module">
+<!doctype html><html lang="zh-CN"><head><meta charset="UTF-8"><link rel="stylesheet" href="/fonts/geist/fonts.css"></head><body style="margin:0;background:transparent"><canvas id="export"></canvas><script type="module">
 import {renderFrame} from './src/render.js';
-window.renderExport=(rows,settings,time,background='transparent')=>{
- const canvas=document.getElementById('export');renderFrame(canvas,rows,settings,time);
+import {renderComposition} from './src/composition.js';
+await Promise.all([document.fonts.load('400 26px Geist'),document.fonts.load('600 26px Geist'),document.fonts.load('400 18px "Geist Mono"')]);
+window.renderExport=(rows,settings,time,background='transparent',composition=null)=>{
+ const canvas=document.getElementById('export');
+ if(composition)return renderComposition(canvas,rows,settings,time,composition,composition.media,null,composition.fps),canvas.toDataURL('image/png').split(',')[1];
+ renderFrame(canvas,rows,settings,time);
  if(background==='black'){
    const ctx=canvas.getContext('2d');ctx.save();ctx.globalCompositeOperation='destination-over';ctx.fillStyle='#000';ctx.fillRect(0,0,canvas.width,canvas.height);ctx.restore();
  }

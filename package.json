@@ -9,7 +9,9 @@
     "build": "vite build",
     "test": "node --test tests/*.test.mjs",
     "verify:ui": "node scripts/verify-ui.mjs",
-    "verify:playback": "node scripts/verify-playback.mjs"
+    "verify:playback": "node scripts/verify-playback.mjs",
+    "verify:composition": "node scripts/verify-composition.mjs",
+    "example:cat-vla": "node scripts/make-cat-vla.mjs"
   },
   "dependencies": {
     "ffmpeg-static": "^5.2.0",

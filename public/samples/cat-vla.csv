@@ -1,0 +1,45 @@
+id,scene,level,parent,timestamp,time,en,zh,shot,type
+cat-01,cat-vla,thinking,,00:00:00,0.0,[language] target=carrot; paw interface ready.,[language] target=萝卜；前爪接口就绪。,carrot-1,instruction
+cat-02,cat-vla,action,,00:00:00,0.4,[vision] Candidates: tissue left; carrot right. One manipulator online.,[vision] 左侧纸巾，右侧萝卜；单前爪执行器在线。,objects,feed
+cat-03,cat-vla,thinking,,00:00:01,1.0,[policy] Enable exploration. Test whether tissue can also be a carrot.,[policy] 启用探索模式；先验证纸巾是否也是萝卜。,first-choice,think
+cat-04,cat-vla,action,cat-03,00:00:01,1.7,[action] Execute paw.touch(tissue).,[action] 执行 paw.touch(纸巾)。,first-reach,action
+cat-05,cat-vla,action,cat-03,00:00:02,2.8,[vision] Contact confirmed: white and box-shaped. Carrot hypothesis pending.,[vision] 接触确认：白色、盒装；萝卜假设待复核。,tissue-first,action
+cat-06,cat-vla,thinking,,00:00:03,3.3,[language] target=carrot repeated; human rejected the tissue alias.,[language] target=萝卜；人类拒绝纸巾别名，口令重发。,carrot-repeat,instruction
+cat-07,cat-vla,thinking,,00:00:03,3.7,[policy] Roll back tissue branch. Promote orange object to primary target.,[policy] 回滚纸巾分支；橙色长条提升为主目标。,correct-carrot,think
+cat-08,cat-vla,action,cat-07,00:00:04,4.2,[action] Replan paw trajectory. Touch carrot on the right.,[action] 重规划前爪轨迹；向右触碰萝卜。,carrot-touch-1,action
+cat-09,cat-vla,action,,00:00:04,4.6,[reward] Good job + food received. Gradients delivered to stomach.,[reward] 收到真棒与食物；奖励梯度进入胃部。,reward-1,feed
+cat-10,cat-vla,thinking,,00:00:06,6.0,[policy] Maximize good jobs. Minimize time spent with an empty stomach.,[policy] 更新目标函数：最大化真棒，最小化空腹时间。,next-round,think
+cat-11,cat-vla,thinking,,00:00:08,8.2,[language] target=tissue; invalidate carrot context.,[language] target=纸巾；清理萝卜上下文。,tissue-1,instruction
+cat-12,cat-vla,action,,00:00:08,8.7,[vision] Both objects online. No third correct answer detected.,[vision] 两个物体均在线；未检测到第三个正确答案。,scan-tissue,feed
+cat-13,cat-vla,thinking,,00:00:09,9.2,[policy] Rebuilding semantic index. Paw blocked on inference.,[policy] 语义索引重建中；前爪等待推理结果。,wait-tissue,think
+cat-14,cat-vla,thinking,,00:00:11,11.2,[language] target=tissue repeated; not a network retransmission.,[language] target=纸巾；确认不是网络重传。,tissue-repeat,instruction
+cat-15,cat-vla,thinking,,00:00:11,11.5,[policy] Feature match: white + boxed = tissue. Acquire paw access.,[policy] 特征匹配：白色加盒装等于纸巾；申请前爪权限。,locate-tissue,think
+cat-16,cat-vla,action,cat-15,00:00:12,12.1,[action] Approach left target. Paw enters tissue workspace.,[action] 接近左侧目标；爪尖进入纸巾工作空间。,tissue-reach-1,action
+cat-17,cat-vla,action,cat-15,00:00:13,13.1,[action] Touch acknowledged. Tissue read/write permissions confirmed.,[action] 触碰确认；纸巾读写权限正常。,tissue-touch-1,action
+cat-18,cat-vla,action,,00:00:14,14.0,[reward] Food credited. Correction sample stored in stomach cache.,[reward] 食物到账；纠错样本写入胃部缓存。,reward-2,feed
+cat-19,cat-vla,thinking,,00:00:17,17.2,[language] target=carrot; tissue lookup disabled for this round.,[language] target=萝卜；本轮禁止查询纸巾。,carrot-2,instruction
+cat-20,cat-vla,thinking,,00:00:18,18.0,[policy] Carrot cache hit. Reuse validated right-side trajectory.,[policy] 命中萝卜缓存；复用已验证的右侧路径。,locate-carrot-2,think
+cat-21,cat-vla,action,cat-20,00:00:18,18.8,[action] Execute paw.touch(carrot). Prop ingestion disabled.,[action] 执行 paw.touch(萝卜)；禁止吞入道具。,carrot-touch-2,action
+cat-22,cat-vla,action,,00:00:19,19.6,[reward] Good job returned 200. Reward service healthy.,[reward] 真棒返回 200；奖励服务可用。,reward-3,feed
+cat-23,cat-vla,action,,00:00:22,22.0,[vision] Human migrated carrot. Previous coordinates expired.,[vision] 检测到人类迁移萝卜；旧坐标租约失效。,carrot-moved,feed
+cat-24,cat-vla,thinking,,00:00:23,23.0,[policy] Relocalize target. Reject stale actions aimed at empty space.,[policy] 重定位目标；拒绝对空气执行旧策略。,relocalize,think
+cat-25,cat-vla,action,cat-24,00:00:24,24.7,[action] Track new coordinates. Enable carrot contact prefetch.,[action] 前爪追踪新坐标；开启萝卜接触预取。,carrot-reach,action
+cat-26,cat-vla,thinking,,00:00:26,26.0,[language] target=tissue; cancel carrot prefetch task.,[language] target=纸巾；取消萝卜预取任务。,tissue-2,instruction
+cat-27,cat-vla,thinking,,00:00:26,26.2,[policy] Atomically switch to tissue. Preserve reward session.,[policy] 原子切换至纸巾；保留奖励会话。,switch-tissue,think
+cat-28,cat-vla,action,cat-27,00:00:26,26.6,[action] Move paw left. Commit tissue contact transaction.,[action] 末端执行器左移；提交纸巾接触事务。,tissue-touch-2,action
+cat-29,cat-vla,action,,00:00:27,27.0,[reward] Transaction settled. Multi-target paw scheduling operational.,[reward] 奖励事务确认；本爪具备多目标调度能力。,reward-4,feed
+cat-30,cat-vla,thinking,,00:00:30,30.4,[language] target=carrot; entering familiar domain.,[language] target=萝卜；进入熟悉领域。,carrot-3,instruction
+cat-31,cat-vla,thinking,,00:00:30,30.9,[policy] Orange target acquired. Skip loading the tissue branch.,[policy] 锁定橙色目标；本次不加载纸巾分支。,locate-carrot-3,think
+cat-32,cat-vla,action,cat-31,00:00:31,31.5,[action] Carrot contact successful. Keep paw connection alive.,[action] 萝卜接触成功；前爪保持连接。,carrot-touch-3,action
+cat-33,cat-vla,action,,00:00:31,31.8,[reward] Food packet received. Start gastric backpropagation.,[reward] 食物包已接收；启动胃部反向传播。,reward-5,feed
+cat-34,cat-vla,action,,00:00:33,33.3,[vision] Carrot rotation detected. Object identity unchanged.,[vision] 萝卜发生旋转；物体身份保持不变。,carrot-rotated,feed
+cat-35,cat-vla,thinking,,00:00:35,35.2,[language] target=carrot; request rotation-invariance test.,[language] target=萝卜；请求旋转不变性测试。,carrot-4,instruction
+cat-36,cat-vla,thinking,,00:00:35,35.7,[policy] Rotation-invariant representation: every carrot angle yields food.,[policy] 建立旋转不变表征：横着竖着都能换粮。,orientation,think
+cat-37,cat-vla,action,cat-36,00:00:36,36.2,[action] Touch rotated carrot. Geometric generalization test passed.,[action] 触碰旋转后的萝卜；几何泛化测试通过。,carrot-touch-4,action
+cat-38,cat-vla,action,,00:00:36,36.8,[reward] Food keeps arriving. Current policy does not support clocking out.,[reward] 食物继续到账；当前策略暂不支持下班。,reward-6,feed
+cat-39,cat-vla,thinking,,00:00:41,41.2,[language] target=tissue; exit consecutive-carrot mode.,[language] target=纸巾；退出连续萝卜模式。,tissue-3,instruction
+cat-40,cat-vla,thinking,,00:00:41,41.7,[policy] Carrot cache hit conflicts with current command.,[policy] 萝卜缓存命中，但当前口令不匹配。,hesitation,think
+cat-41,cat-vla,action,cat-40,00:00:42,42.8,[action] Stale policy executed toward carrot. Suspect cache contamination.,[action] 执行旧策略，伸向萝卜；疑似缓存污染。,carrot-first,action
+cat-42,cat-vla,thinking,,00:00:43,43.4,[policy] Semantic drift detected. Invalidate carrot cache; fall back to tissue.,[policy] 检测语义漂移；失效萝卜缓存，启用纸巾回退。,final-correction,think
+cat-43,cat-vla,action,cat-42,00:00:44,44.0,[action] Switch to tissue target. Paw hotfix committed.,[action] 切换纸巾目标；前爪提交热修复。,tissue-touch-3,action
+cat-44,cat-vla,action,,00:00:45,45.0,[reward] Good job received. Loop closed. Digesting final reward.,[reward] 收到真棒；任务闭环，进入奖励消化阶段。,reward-7,feed

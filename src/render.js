@@ -1,5 +1,6 @@
 import {defaults,groupStates,rowColor} from './model.js';
-const font='"SFMono-Regular", Menlo, Consolas, "PingFang SC", "Microsoft YaHei", monospace';
+import {geist} from './theme.js';
+const font=geist.mono;
 export function wrapText(ctx,text,width){
  const result=[];
  for(const paragraph of text.split('\n')){let line='';const tokens=paragraph.match(/[a-zA-Z0-9’'.,:;!?_/@()\-]+\s*|[^\x00-\x7F]|\s+|./gu)||[''];
@@ -12,7 +13,7 @@ export function wrapText(ctx,text,width){
 }
 const ease=x=>{x=Math.max(0,Math.min(1,x));return x*x*(3-2*x);};
 function shimmerGradient(ctx,left,right,time,color){
- const gradient=ctx.createLinearGradient(left,0,right,0);const base=[104,114,131];
+ const gradient=ctx.createLinearGradient(left,0,right,0);const base=[125,125,125];
  for(let step=0;step<=64;step++){
    const x=step/64;const weight=Math.pow((1+Math.cos(2*Math.PI*(x-time/3)))/2,4);
    const rgb=base.map((value,i)=>Math.round(value+(color[i]-value)*weight));
@@ -30,7 +31,7 @@ export function renderFrame(canvas,rows,s,t){
  if(s.showLogo&&s.logo.trim()){
    const lines=s.logo.split('\n');const longest=Math.max(...lines.map(l=>Array.from(l).length),1);
    const size=Math.min(14,(s.width-2*p)/(longest*.61),(s.height*.33)/Math.max(1,lines.length)/1.22);
-   ctx.font=`${size}px ${font}`;ctx.fillStyle='#d8dde7';
+   ctx.font=`${size}px ${font}`;ctx.fillStyle=geist.dark.text;
    lines.forEach((line,i)=>ctx.fillText(line,p,top+i*size*1.22));top+=lines.length*size*1.22+24;
  }
  const contentHeight=s.height-top-p;const items=[];let y=0;
@@ -61,16 +62,16 @@ export function renderFrame(canvas,rows,s,t){
  ctx.save();ctx.beginPath();ctx.rect(0,top,s.width,Math.max(0,contentHeight));ctx.clip();
  for(const item of items){const iy=top+item.y-scroll;if(iy+item.height<top||iy>s.height-p)continue;
    ctx.globalAlpha=item.alpha;
-   if(item.type==='summary'){ctx.font=`12px ${font}`;ctx.fillStyle='#687785';ctx.fillText(item.text,p+34,iy+3);continue;}
+   if(item.type==='summary'){ctx.font=`12px ${font}`;ctx.fillStyle=geist.dark.muted;ctx.fillText(item.text,p+34,iy+3);continue;}
    let ty=iy;const firstOffset=s.showTimestamp?item.entries[0].size*1.8:0;
    const color=rowColor(item.row,s);
-   if(item.action){ctx.fillStyle=item.row.type?color:'#7f9392';ctx.font=`${s.actionSize*.85}px ${font}`;ctx.fillText(item.row.parent?'↳':'·',item.left,iy+firstOffset+1);}
-   else if(item.done){ctx.strokeStyle='#a4bbaf';ctx.lineWidth=1.8;ctx.beginPath();ctx.moveTo(item.left+2,iy+firstOffset+11);ctx.lineTo(item.left+7,iy+firstOffset+16);ctx.lineTo(item.left+16,iy+firstOffset+5);ctx.stroke();}
+   if(item.action){ctx.fillStyle=item.row.type?color:geist.dark.muted;ctx.font=`${s.actionSize*.85}px ${font}`;ctx.fillText(item.row.parent?'↳':'·',item.left,iy+firstOffset+1);}
+   else if(item.done){ctx.strokeStyle=geist.dark.text;ctx.lineWidth=1.8;ctx.beginPath();ctx.moveTo(item.left+2,iy+firstOffset+11);ctx.lineTo(item.left+7,iy+firstOffset+16);ctx.lineTo(item.left+16,iy+firstOffset+5);ctx.stroke();}
    else {const dot=Math.max(2,Math.min(4,s.mainSize/7));for(let n=0;n<12;n++){ctx.fillStyle=`rgba(${glowRGB.join(',')},${.18+.82*Math.pow((1+Math.cos(2*Math.PI*(n/12-t*.75)))/2,3)})`;ctx.fillRect(item.left+(n%4)*(dot+2),iy+firstOffset+4+Math.floor(n/4)*(dot+2),dot,dot);}}
    const gradient=!item.action&&!item.done?shimmerGradient(ctx,item.left+item.mark,s.width-p,t,glowRGB):null;
    for(const line of item.entries){ctx.font=`${line.size}px ${font}`;
-     if(line.timestamp)ctx.fillStyle='#6d7e89';
-     else if(item.action||item.done){ctx.fillStyle=color;if(line.secondary){if(item.row.type)ctx.globalAlpha=item.alpha*.8;else ctx.fillStyle=item.action?'#7c8d98':'#a4abb8';}}
+     if(line.timestamp)ctx.fillStyle=geist.dark.muted;
+     else if(item.action||item.done){ctx.fillStyle=color;if(line.secondary){if(item.row.type)ctx.globalAlpha=item.alpha*.8;else ctx.fillStyle=geist.dark.muted;}}
      else {ctx.fillStyle=gradient;ctx.shadowColor=`rgba(${glowRGB.join(',')},${glowStrength*.45})`;ctx.shadowBlur=glowStrength>0?Math.max(1,line.size*.07):0;}
      ctx.fillText(line.text,item.left+item.mark,ty);ctx.shadowBlur=0;ctx.globalAlpha=item.alpha;ty+=line.size*(line.timestamp?1.8:1.52);
    }

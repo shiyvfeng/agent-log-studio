@@ -21,6 +21,15 @@ try {
   await page.goto('/');
   await page.waitForSelector('.log-row');
   assert.equal(await page.title(),APP_NAME);
+  // Tabs expose the selected panel and support manual keyboard activation.
+  await page.locator('[data-tab=content]').focus();
+  await page.keyboard.press('ArrowRight');
+  assert.equal(await page.locator('[data-tab=composition]').evaluate(el=>el===document.activeElement),true);
+  await page.keyboard.press('Enter');
+  assert.equal(await page.locator('[data-tab=composition]').getAttribute('aria-selected'),'true');
+  assert.equal(await page.locator('#compositionTab').isVisible(),true);
+  await page.keyboard.press('Home');await page.keyboard.press('Space');
+  assert.equal(await page.locator('[data-tab=content]').getAttribute('aria-selected'),'true');
   const health=await (await page.request.get('/api/health')).json();
   assert.equal(health.app,APP_ID);
   assert.ok(health.browser&&health.encoder,'Chrome and FFmpeg are available');

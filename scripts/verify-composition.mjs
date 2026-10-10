@@ -27,6 +27,23 @@ try{
  const preview=await page.locator('#preview').evaluate((canvas,v)=>{const copy=document.createElement('canvas');copy.width=canvas.width;copy.height=canvas.height;const ctx=copy.getContext('2d');ctx.drawImage(canvas,0,0);ctx.clearRect(v.x,v.y,v.width,v.height);return copy.toDataURL();},v);
  const exported=await exportPage.evaluate(({saved,v})=>{window.renderExport(saved.rows,saved.settings,4.6,'transparent',{...saved.composition,media:saved.media,fps:30});const canvas=document.getElementById('export');canvas.getContext('2d').clearRect(v.x,v.y,v.width,v.height);return canvas.toDataURL();},{saved,v});
  assert.equal(exported,preview,'preview and export share the complete UI and log pixels');
+ // The ASCII header must never consume or reflow log output, even in old drafts.
+ const logoLayouts=[[1920,1080],[1280,720],[1080,1920],[1080,1080],[320,240]].map(([width,height])=>({width,height,...compositionLayout(width,height,saved.media)}));
+ const logoChecks=await exportPage.evaluate(({saved,layouts})=>layouts.map(layout=>{
+  const settings={...saved.settings,width:layout.width,height:layout.height},canvas=document.getElementById('export');
+  const logPixels=()=>{
+   const copy=document.createElement('canvas');copy.width=layout.log.width;copy.height=layout.log.height;
+   copy.getContext('2d').drawImage(canvas,layout.log.x,layout.log.y,copy.width,copy.height,0,0,copy.width,copy.height);return copy.toDataURL();
+  };
+  const composition={...saved.composition,media:saved.media};
+  const withLogo=window.renderExport(saved.rows,settings,4.6,'transparent',{...composition,showLogo:true});
+  const logs=logPixels();
+  const withoutLogo=window.renderExport(saved.rows,{...settings,showLogo:true},4.6,'transparent',{...composition,showLogo:false});
+  const unchanged=logs===logPixels();
+  window.renderExport(saved.rows,settings,4.6,'transparent',{...composition,logo:'CUSTOM ASCII\n>_ AGENT'});
+  return {width:layout.width,height:layout.height,headerChanges:withLogo!==withoutLogo,unchanged,customUnchanged:logs===logPixels()};
+ }),{saved,layouts:logoLayouts});
+ assert.ok(logoChecks.every(check=>check.headerChanges&&check.unchanged&&check.customUnchanged),JSON.stringify(logoChecks));
  await page.screenshot({path:`${output}/web-workbench.png`});
  await page.locator('#play').click();await page.waitForFunction(()=>document.querySelector('#sourceVideo').currentTime>4.85);
  await page.locator('#play').click();assert.equal(await page.locator('#sourceVideo').evaluate(video=>video.paused),true);

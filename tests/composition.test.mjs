@@ -10,7 +10,7 @@ test('cat composition retains its clip, original audio and 25 ordered captions',
   assert.deepEqual(video,{x:64,y:228,width:432,height:768});assert.deepEqual(log,{x:704,y:228,width:1152,height:768});
 });
 test('invalid trims, offsets, fit modes and captions are rejected before encoding',()=>{
-  for(const changes of [{sourceStart:-1},{sourceStart:46},{sourceEnd:50},{sourceEnd:0},{sourceEnd:NaN},{logOffset:Infinity},{keepAudio:'true'},{fit:'stretch'},{title:'x'.repeat(81)},{phases:[{time:2,title:'b',detail:''},{time:1,title:'a',detail:''}]},{phases:[{time:-1,title:'a',detail:''}]}])assert.throws(()=>validateComposition({...catVLAComposition,...changes},media));
+  for(const changes of [{sourceStart:-1},{sourceStart:46},{sourceEnd:50},{sourceEnd:0},{sourceEnd:NaN},{logOffset:Infinity},{keepAudio:'true'},{fit:'stretch'},{title:'x'.repeat(81)},{showLogo:'yes'},{logo:42},{logo:'x'.repeat(10001)},{phases:[{time:2,title:'b',detail:''},{time:1,title:'a',detail:''}]},{phases:[{time:-1,title:'a',detail:''}]}])assert.throws(()=>validateComposition({...catVLAComposition,...changes},media));
   assert.throws(()=>validateComposition(compositionDefaults,null));
 });
 test('portrait, square and landscape sources fit without overlapping the logs',()=>{

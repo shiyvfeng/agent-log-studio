@@ -1,7 +1,8 @@
 <!doctype html><html lang="zh-CN"><head><meta charset="UTF-8"><link rel="stylesheet" href="/fonts/geist/fonts.css"></head><body style="margin:0;background:transparent"><canvas id="export"></canvas><script type="module">
+import {loadGeistFonts} from './src/theme.js';
 import {renderFrame} from './src/render.js';
 import {renderComposition} from './src/composition.js';
-await Promise.all([document.fonts.load('400 26px Geist'),document.fonts.load('600 26px Geist'),document.fonts.load('400 18px "Geist Mono"')]);
+await loadGeistFonts();
 window.renderExport=(rows,settings,time,background='transparent',composition=null)=>{
  const canvas=document.getElementById('export');
  if(composition)return renderComposition(canvas,rows,settings,time,composition,composition.media,null,composition.fps),canvas.toDataURL('image/png').split(',')[1];

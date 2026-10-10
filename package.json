@@ -11,7 +11,9 @@
     "verify:ui": "node scripts/verify-ui.mjs",
     "verify:playback": "node scripts/verify-playback.mjs",
     "verify:composition": "node scripts/verify-composition.mjs",
-    "example:cat-vla": "node scripts/make-cat-vla.mjs"
+    "verify:examples": "node scripts/verify-video-examples.mjs",
+    "example:cat-vla": "node scripts/make-cat-vla.mjs",
+    "example:crab-vla": "node scripts/make-video-example.mjs crab-vla"
   },
   "dependencies": {
     "ffmpeg-static": "^5.2.0",

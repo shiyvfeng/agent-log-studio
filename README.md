@@ -6,7 +6,7 @@
 
 Agent Log Studio 是本机运行的视频与日志工作台：上传视频，为它编写观察、推理、决策、执行与奖励日志，在网页里同步预览，再直接导出带原声的完整成片。支持 CSV 导入、逐条编辑、双语排版与阶段字幕。你负责提供视频和剧本，它负责把胡说八道排版得像刚通过了论文评审。
 
-从 [启动](#启动) 开始，按 [网页完整流程](#网页完整流程) 制作自己的视频；也可以直接载入下面的猫咪示例，从第一根萝卜开始部署智能。
+从 [启动](#启动) 开始，按 [网页完整流程](#网页完整流程) 制作自己的视频；也可以直接载入下面的猫咪或螃蟹示例，从第一根萝卜、第一朵浪花开始部署智能。
 
 ## 猫咪 VLA 示例视频
 
@@ -56,6 +56,41 @@ npm run example:cat-vla
 
 README 展示用的截图和短动图保存在 `docs/images/`；原素材及完整生成产物保留在忽略的 `output/` 目录。素材作者为抖音「超级无敌大开门」（`dakaimenPYQ`），原水印和音轨均保留。更多来源与复现步骤见 [猫咪 VLA 示例说明](docs/猫咪VLA示例.md)。
 
+## 螃蟹 VLA 示例视频
+
+一只真实海滩上的岸蟹，先横向移动、停顿转向，再随浪花抵达进入浅水。19.2 秒的连续镜头保留正常速度与环境原声，配上 23 条双语日志和 11 段阶段字幕：八腿负责导航，海浪负责全量推送。
+
+下面是成片第 4.5–12.5 秒：浪花进入视野、第一股海水抵达，“沙盒环境”开始升级为“水池”。
+
+![螃蟹 VLA 示例动图：海滩巡航、浪花抵达与水陆模式切换](docs/images/crab-vla-preview.gif)
+
+```text
+[policy] 优先选择横向路径；暂不兼容直着走。
+[environment] 首批海水抵达；沙盒升级为水池。
+[policy] 干燥任务稍后重试；海浪接口没有拒绝按钮。
+```
+
+在「视频合成」点击「载入螃蟹完整示例」，即可一并载入视频、[双语日志](public/samples/crab-vla.csv)、字幕与版式，再直接编辑、预览和导出。
+
+[![螃蟹完整示例的 Web UI：视频、日志、素材载入入口与合成设置](docs/images/crab-vla-workbench.png)](docs/images/crab-vla-workbench.png)
+
+<details>
+<summary>查看成片高清截图与命令行复现</summary>
+
+![螃蟹 VLA 成片截图：沙盒升级为水池，海浪获得最高优先级](docs/images/crab-vla.png)
+
+服务启动后，在另一个终端执行：
+
+```sh
+npm run example:crab-vla
+```
+
+完整成片输出到 `output/examples/crab-vla/crab-vla.mp4`，规格为 1920 × 1080、30 fps、H.264 / AAC。网页与命令行使用同一份预设和导出接口。
+
+</details>
+
+素材来自 [Arthro / Wikimedia Commons](https://commons.wikimedia.org/wiki/File:Carcinus_maenas_walking_on_land.ogv)，许可为 [CC0 1.0](https://creativecommons.org/publicdomain/zero/1.0/)，成片保留署名。首次载入从 `upload.wikimedia.org` 下载并校验原素材。动作时间线、来源与复现步骤见 [螃蟹 VLA 示例说明](docs/螃蟹VLA示例.md)。
+
 ## 启动
 
 需要 Node.js 20.19+ 或 22.12+，视频导出还需要 Google Chrome / Chromium。FFmpeg 由依赖自带；含中文的成片需要系统安装中文字体。
@@ -82,7 +117,7 @@ npm start
 
 ### 1. 载入原视频
 
-打开右侧「视频合成」，点击「上传视频」使用自己的素材，或点击「载入猫咪完整示例」一次载入视频、44 条双语日志、25 段阶段字幕和版式。单个素材最多 200 MB、20 分钟，准备完成后确认「预览与导出完整成片」已开启。
+打开右侧「视频合成」，点击「上传视频」使用自己的素材，或点击「载入猫咪完整示例」「载入螃蟹完整示例」一次载入相应的视频、双语日志、阶段字幕和版式。猫咪示例含 44 条日志、25 段字幕；螃蟹示例含 23 条日志、11 段字幕。单个素材最多 200 MB、20 分钟，准备完成后确认「预览与导出完整成片」已开启。
 
 [![步骤 1：视频合成页的素材载入入口、视频信息与完整成片开关](docs/images/web-workbench.png)](docs/images/web-workbench.png)
 
@@ -120,7 +155,7 @@ npm start
 
 只需要日志素材时，关闭「预览与导出完整成片」，再选择黑底 MP4 或透明 WebM / MOV 导出，供其他剪辑流程使用。
 
-日志、画布设置、合成设置与阶段字幕自动保存到当前浏览器；素材存放在服务端 `output/media/`，刷新网页会恢复关联。切换日志示例会替换当前日志；载入完整猫咪示例会替换日志、合成设置和素材，请先下载要保留的 CSV。CSV 不包含画布设置或阶段字幕。日志文案由用户编写或导入。
+日志、画布设置、合成设置与阶段字幕自动保存到当前浏览器；素材存放在服务端 `output/media/`，刷新网页会恢复关联。切换日志示例会替换当前日志；载入完整视频示例会替换日志、合成设置和素材，请先下载要保留的 CSV。CSV 不包含画布设置或阶段字幕。日志文案由用户编写或导入。
 
 ## CSV
 
@@ -152,7 +187,7 @@ task-2,demo,action,task-1,09:00:01,1,Read the input.,读取输入。,,action
 | 纯日志 | WebM / VP9 | Alpha 透明日志 | 支持透明视频的浏览器或剪辑流程 |
 | 纯日志 | MOV / ProRes 4444 | Alpha 透明日志 | 剪辑素材，体积较大 |
 
-默认 60 fps，也支持 24 / 30 fps；载入猫咪完整示例时预设为 30 fps。导出使用 Chrome 逐帧渲染与 FFmpeg 编码，结果保存在 `output/exports/`；可查看进度、取消和下载。预览与导出共用同一 Canvas 渲染器。
+默认 60 fps，也支持 24 / 30 fps；载入猫咪或螃蟹完整示例时预设为 30 fps。导出使用 Chrome 逐帧渲染与 FFmpeg 编码，结果保存在 `output/exports/`；可查看进度、取消和下载。预览与导出共用同一 Canvas 渲染器。
 
 开启完整成片时使用 MP4，包含原视频、Geist 界面、日志与阶段字幕，可保留原声。1× 播放倍率下，已是 AAC 的原声音轨直接复制；其他音频格式会转换为 AAC，倍速音频按同一倍率处理。上传的素材会准备为浏览器可播放的 H.264 预览文件，HEVC 等输入也能进入同一流程。
 
@@ -169,9 +204,10 @@ npm run build
 npm run verify:playback
 npm run verify:ui
 npm run verify:composition
+npm run verify:examples
 ```
 
-浏览器检查默认连接 `http://127.0.0.1:4320`；可用 `AGENT_LOG_STUDIO_TEST_URL` 指定地址。`verify:ui` 验证纯日志导出；`verify:composition` 实际操作素材上传、裁切、字幕编辑、草稿恢复、原声／静音／倍速导出与取消，并用系统 `ffprobe` 核对帧数和音轨。测试产物写入 `output/qa/`。
+浏览器检查默认连接 `http://127.0.0.1:4320`；可用 `AGENT_LOG_STUDIO_TEST_URL` 指定地址。`verify:ui` 验证纯日志导出；`verify:composition` 实际操作素材上传、裁切、字幕编辑、草稿恢复、原声／静音／倍速导出与取消，并用系统 `ffprobe` 核对帧数和音轨；`verify:examples` 验证所有完整视频预设的载入、播放、渲染一致性、网页导出及手机布局。测试产物写入 `output/qa/`。
 
 | 位置 | 职责 |
 | --- | --- |
@@ -179,10 +215,11 @@ npm run verify:composition
 | `src/samples.js`、`public/samples/` | 通用示例清单与 CSV |
 | `src/model.js` | CSV、时间、层级、默认设置和校验 |
 | `src/render.js` | 共用 Canvas 渲染与动画 |
-| `src/composition.js`、`src/cat-vla.js` | 共享成片版式、合成校验与猫咪时间线 |
+| `src/composition.js`、`src/cat-vla.js`、`src/crab-vla.js` | 共享成片版式、合成校验与猫咪／螃蟹时间线 |
+| `src/video-examples.js` | 完整视频示例的固定素材、日志、画布与字幕预设；网页与命令行共用 |
 | `src/main.js`、`src/style.css` | 编辑器、预览和交互 |
 | `server.mjs`、`export.html` | 本地服务、逐帧渲染、编码与下载 |
 | `server/media.mjs` | 视频上传、浏览器预览准备、示例下载与范围读取 |
 | `tests/`、`scripts/verify-*.mjs` | 模型测试、播放和界面验证 |
 
-添加内置示例时，在 `public/samples/` 放入 CSV，然后更新 `src/samples.js`。项目范围见 [项目说明](docs/项目说明.md)。
+添加内置日志示例时，在 `public/samples/` 放入 CSV，然后更新 `src/samples.js`。完整视频示例还需要在 `src/video-examples.js` 登记固定素材 URL、SHA-256、署名、画布设置与合成时间线，网页会自动生成相应的载入入口。命令行可用 `node scripts/make-video-example.mjs <示例 ID>` 复现同一成片；首次下载通过校验后，会把原素材缓存在 `output/examples/<示例 ID>/`（猫咪为 `source.mp4`，螃蟹为 `source.ogv`），后续载入先校验并复用缓存。项目范围见 [项目说明](docs/项目说明.md)。

@@ -1,13 +1,13 @@
 import path from 'node:path';
 import {createReadStream,createWriteStream} from 'node:fs';
-import {mkdir,readFile,writeFile,stat,unlink} from 'node:fs/promises';
+import {mkdir,readFile,writeFile,stat,unlink,rename} from 'node:fs/promises';
 import {pipeline} from 'node:stream/promises';
 import {Transform} from 'node:stream';
 import {spawn} from 'node:child_process';
 import {randomUUID,createHash} from 'node:crypto';
 import ffmpeg from 'ffmpeg-static';
 import {MAX_MEDIA_BYTES} from '../src/composition.js';
-import {catVLASource} from '../src/cat-vla.js';
+import {getVideoExample} from '../src/video-examples.js';
 
 export function createMediaStore(root){
   const directory=path.join(root,'output','media'),items=new Map();
@@ -63,21 +63,25 @@ export function createMediaStore(root){
       return await create(incoming,decodeURIComponent(req.headers['x-file-name']||'video.mp4').replaceAll('\\','/').split('/').at(-1));
     }catch(error){await unlink(incoming).catch(()=>{});throw error;}
   }
-  async function example(){
-    // A fixed public mirror is the only remote URL accepted by this endpoint.
+  async function example(id='cat-vla'){
+    // The identifier selects a fixed public source, never a client-supplied URL.
+    const preset=getVideoExample(id),source=preset.source;
     await mkdir(directory,{recursive:true});
     const input=path.join(directory,`${randomUUID()}.upload`);
-    const cached=path.join(root,'output','examples','cat-vla','source.mp4');let data;
+    const cached=path.join(root,'output','examples',preset.id,source.filename||'source.mp4');let data;
     try{data=await readFile(cached);}catch(error){if(error.code!=='ENOENT')throw error;}
     if(!data){
       // curl uses the environment's HTTPS proxy and CA configuration.
       await new Promise((resolve,reject)=>{
-        const child=spawn('curl',['--fail','--location','--silent','--show-error','--max-time','60','--max-filesize',String(MAX_MEDIA_BYTES),'--output',input,catVLASource.url],{stdio:['ignore','ignore','pipe']});
+        const child=spawn('curl',['--fail','--location','--silent','--show-error','--max-time','60','--max-filesize',String(MAX_MEDIA_BYTES),'--output',input,source.url],{stdio:['ignore','ignore','pipe']});
         let message='';child.stderr.on('data',d=>message=(message+d).slice(-1000));child.on('error',reject);child.on('close',code=>code===0?resolve():reject(Error('示例素材下载失败，请检查网络后重试。',{cause:message})));
       }).catch(async error=>{await unlink(input).catch(()=>{});throw error;});data=await readFile(input);
     }
-    if(createHash('sha256').update(data).digest('hex')!==catVLASource.sha256){await unlink(input).catch(()=>{});throw Error('示例素材校验失败');}
-    await writeFile(input,data);return create(input,'超级无敌大开门 · 萝卜与纸巾.mp4');
+    if(createHash('sha256').update(data).digest('hex')!==source.sha256){await unlink(input).catch(()=>{});throw Error('示例素材校验失败');}
+    await mkdir(path.dirname(cached),{recursive:true});
+    const cacheTemp=`${cached}.${randomUUID()}.download`;
+    try{await writeFile(cacheTemp,data);await rename(cacheTemp,cached);}finally{await unlink(cacheTemp).catch(()=>{});}
+    await writeFile(input,data);return create(input,preset.mediaName);
   }
   async function send(req,res,item){
     if(item.status!=='ready')throw Error('视频尚未准备完成');

@@ -71,7 +71,8 @@ const server=http.createServer(async(req,res)=>{
     if(!req.headers['content-type']?.includes('application/octet-stream'))return json(res,415,{error:'请上传视频文件'});
     return json(res,202,await mediaStore.upload(req));
   }
-  if(url.pathname==='/api/media/examples/cat-vla'&&req.method==='POST')return json(res,202,await mediaStore.example());
+  const exampleMatch=/^\/api\/media\/examples\/([a-z0-9-]+)$/.exec(url.pathname);
+  if(exampleMatch&&req.method==='POST')return json(res,202,await mediaStore.example(exampleMatch[1]));
   const mediaMatch=/^\/api\/media\/([a-f0-9-]{36})(\/file)?$/.exec(url.pathname);
   if(mediaMatch){
     const item=await mediaStore.get(mediaMatch[1]);

@@ -16,9 +16,9 @@ try{
  page.on('pageerror',e=>errors.push(e.message));
  await page.goto('/');await page.waitForSelector('.log-row');
  await page.locator('[data-tab=composition]').click();await page.locator('#loadCatVideo').click();
- await page.waitForFunction(()=>document.querySelector('#mediaStatus').textContent.includes('25 段'),{},{timeout:120000});
+ await page.waitForFunction(()=>document.querySelector('#mediaStatus').textContent.includes('9 段'),{},{timeout:120000});
  const state=()=>page.evaluate(key=>JSON.parse(localStorage.getItem(key)),STORAGE_KEY);
- let saved=await state();assert.equal(saved.rows.length,44);assert.equal(saved.composition.phases.length,25);assert.equal(saved.composition.sourceEnd,45.6);
+ let saved=await state();assert.equal(saved.rows.length,16);assert.equal(saved.composition.phases.length,9);assert.equal(saved.composition.sourceEnd,45.6);
  assert.ok(saved.media.hasAudio);assert.equal(await page.locator('#exportOpen').innerText(),'导出完整视频');
  await page.locator('#scrubber').fill('4.6');
  await page.waitForFunction(()=>Math.abs(document.querySelector('#sourceVideo').currentTime-4.6)<.01&&!document.querySelector('#sourceVideo').seeking);

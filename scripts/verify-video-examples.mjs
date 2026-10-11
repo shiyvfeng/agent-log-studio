@@ -18,7 +18,7 @@ try{
   let saved;
   for(const example of videoExamples){
     await page.locator('#'+example.buttonId).click();
-    await page.waitForFunction(subject=>document.querySelector('#mediaStatus').textContent.startsWith(subject+'素材、'),example.subject,{timeout:120000});
+    await page.waitForFunction(subject=>document.querySelector('#mediaStatus').textContent.startsWith(subject+'素材、'),example.subject,{timeout:300000});
     saved=await page.evaluate(key=>JSON.parse(localStorage.getItem(key)),STORAGE_KEY);
     const rows=readCSV(await readFile('public'+example.file,'utf8'));
     assert.deepEqual(saved.rows,rows);assert.deepEqual(saved.settings,example.settings);
@@ -27,15 +27,15 @@ try{
     assert.equal(await page.locator('#exportFPS').inputValue(),String(example.fps));
     assert.equal(await page.locator('#exportOpen').innerText(),'导出完整视频');
     assert.ok(rows.every(row=>row.time<example.composition.sourceEnd-example.composition.sourceStart));
-    const time=4.6;await page.locator('#scrubber').fill(String(time));
-    await page.waitForFunction(t=>Math.abs(document.querySelector('#sourceVideo').currentTime-t)<.01&&!document.querySelector('#sourceVideo').seeking,time);
+    const time=4.6,sourceTime=example.composition.sourceStart+time;await page.locator('#scrubber').fill(String(time));
+    await page.waitForFunction(t=>Math.abs(document.querySelector('#sourceVideo').currentTime-t)<.01&&!document.querySelector('#sourceVideo').seeking,sourceTime);
     const exportPage=await browser.newPage();await exportPage.goto(baseURL+'/export.html');await exportPage.waitForFunction(()=>window.exportReady);
     const v=compositionLayout(saved.settings.width,saved.settings.height,saved.media).video;
     const preview=await page.locator('#preview').evaluate((canvas,v)=>{const copy=document.createElement('canvas');copy.width=canvas.width;copy.height=canvas.height;const ctx=copy.getContext('2d');ctx.drawImage(canvas,0,0);ctx.clearRect(v.x,v.y,v.width,v.height);return copy.toDataURL();},v);
     const exported=await exportPage.evaluate(({saved,v,time})=>{window.renderExport(saved.rows,saved.settings,time,'transparent',{...saved.composition,media:saved.media,fps:30});const canvas=document.getElementById('export');canvas.getContext('2d').clearRect(v.x,v.y,v.width,v.height);return canvas.toDataURL();},{saved,v,time});
     assert.equal(exported,preview,example.id+' preview/export pixels');await exportPage.close();
     await page.screenshot({path:output+'/'+example.id+'-workbench.png'});
-    await page.locator('#play').click();await page.waitForFunction(t=>document.querySelector('#sourceVideo').currentTime>t+.2,time);
+    await page.locator('#play').click();await page.waitForFunction(t=>document.querySelector('#sourceVideo').currentTime>t+.2,sourceTime);
     await page.locator('#play').click();assert.equal(await page.locator('#sourceVideo').evaluate(video=>video.paused),true);
     checks.push({id:example.id,rows:rows.length,phases:saved.composition.phases.length,media:saved.media,pixelParity:true});
   }

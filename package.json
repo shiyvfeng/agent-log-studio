@@ -13,7 +13,8 @@
     "verify:composition": "node scripts/verify-composition.mjs",
     "verify:examples": "node scripts/verify-video-examples.mjs",
     "example:cat-vla": "node scripts/make-cat-vla.mjs",
-    "example:crab-vla": "node scripts/make-video-example.mjs crab-vla"
+    "example:crab-vla": "node scripts/make-video-example.mjs crab-vla",
+    "example:tiger-vla": "node scripts/make-video-example.mjs tiger-vla"
   },
   "dependencies": {
     "ffmpeg-static": "^5.2.0",

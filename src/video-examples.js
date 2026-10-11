@@ -1,5 +1,6 @@
 import {catVLASource,catVLASettings,catVLAComposition} from './cat-vla.js';
 import {crabVLASource,crabVLASettings,crabVLAComposition} from './crab-vla.js';
+import {tigerVLASource,tigerVLASettings,tigerVLAComposition} from './tiger-vla.js';
 
 // Only these fixed, checksum-verified sources can be downloaded by the server.
 // The workbench and CLI use the same presets and media preparation API.
@@ -24,6 +25,17 @@ export const videoExamples=[{
   source:crabVLASource,
   settings:crabVLASettings,
   composition:crabVLAComposition,
+  fps:30,
+},{
+  id:'tiger-vla',
+  label:'老虎完整示例',
+  subject:'老虎',
+  buttonId:'loadTigerVideo',
+  file:'/samples/tiger-vla.csv',
+  mediaName:'Grendelkhan · 老虎水中玩木头.webm',
+  source:tigerVLASource,
+  settings:tigerVLASettings,
+  composition:tigerVLAComposition,
   fps:30,
 }];
 

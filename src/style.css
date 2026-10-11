@@ -161,6 +161,7 @@ textarea.logo-input{font:11px/1.5 var(--font-mono);height:160px;margin-top:16px;
 .phase-row b{font-size:13px;font-weight:600;line-height:20px}
 .phase-row small{grid-column:2;font-size:12px;line-height:1.6;color:var(--muted)}
 #compositionTab .import-row{flex-wrap:wrap}
+#compositionTab [data-video-example]{flex-basis:calc(50% - 4px)}
 #uploadVideo{flex-basis:100%}
 #mediaProgress{margin-top:12px}
 dialog{width:520px;max-width:calc(100% - 32px);max-height:calc(100dvh - 32px);padding:24px;border:1px solid var(--line);border-radius:12px;background:var(--ds-background-100);box-shadow:var(--shadow-modal);color:var(--ds-gray-1000)}

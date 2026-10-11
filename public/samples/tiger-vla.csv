@@ -1,0 +1,10 @@
+id,scene,level,parent,timestamp,time,en,zh,shot,type
+tiger-vla-01,tiger-vla,thinking,,00:00:00,0,[language] Target = floating wood. Begin close-range interaction.,[language] 目标=水面木头；启动近距离交互。,tiger-vla-0,instruction
+tiger-vla-02,tiger-vla,action,tiger-vla-01,00:00:02,2.5,[vision] Wood surfaces. Update its relative position.,[vision] 木头露出水面；更新相对位置。,tiger-vla-2.5,action
+tiger-vla-03,tiger-vla,thinking,,00:00:06,6,[action] Press down with a forepaw. Try to secure the floating target.,[action] 前爪下压；尝试固定漂浮目标。,tiger-vla-6,think
+tiger-vla-04,tiger-vla,action,tiger-vla-03,00:00:09,9,[feedback] Splash obscures the target. Stop using stale coordinates.,[feedback] 水花遮挡目标；暂停使用旧坐标。,tiger-vla-9,feed
+tiger-vla-05,tiger-vla,thinking,,00:00:12,12,[policy] Turn to adjust the contact angle. Continue grasping.,[policy] 转身调整接触角度；继续抓取。,tiger-vla-12,think
+tiger-vla-06,tiger-vla,action,tiger-vla-05,00:00:15,15,[action] Lower the head to contact the wood again. Maintain body support.,[action] 再次低头接触木头；保持身体支撑。,tiger-vla-15,action
+tiger-vla-07,tiger-vla,thinking,,00:00:19,19,[policy] Target moves in front. Switch to close-range control.,[policy] 目标转至身前；改用近身控制。,tiger-vla-19,think
+tiger-vla-08,tiger-vla,action,tiger-vla-07,00:00:23,23,[action] Nudge the wood again with a forepaw. Correct the contact point.,[action] 前爪再次拨动木头；修正接触位置。,tiger-vla-23,action
+tiger-vla-09,tiger-vla,thinking,,00:00:27,27,[feedback] Wood is still floating. Grasping task auto-refilled.,[feedback] 木头仍在漂；抓取任务自动续杯。,tiger-vla-27,feed

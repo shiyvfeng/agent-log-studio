@@ -75,15 +75,20 @@ export function compressWaits(rows,maxGap=3){let time=0;let last=rows[0]?.time||
 export function formatClock(t){return [Math.floor(t/3600),Math.floor(t/60)%60,Math.floor(t)%60].map(n=>String(n).padStart(2,'0')).join(':');}
 export function formatDuration(t){return t>=3600?formatClock(t):`${String(Math.floor(t/60)).padStart(2,'0')}:${(t%60).toFixed(1).padStart(4,'0')}`;}
 export function endTime(rows,s){return (rows.at(-1)?.time||0)+Number(s.tail);}
-export function groupStates(rows,t){
+export function groupStates(rows,t,thinkingHold=.65){
   const groups=[];
   for(const row of rows){if(row.level==='thinking'||(row.type&&!row.parent))groups.push({row,children:[]});else groups.at(-1)?.children.push(row);}
-  return groups.filter(g=>g.row.time<=t).map(g=>({...g,complete:t>=(g.children.at(-1)?.time??g.row.time)+0.65,visible:g.children.filter(r=>r.time<=t)}));
+  return groups.filter(g=>g.row.time<=t).map((g,index)=>{
+    const hold=g.row.level==='thinking'?thinkingHold:.65;
+    const completeAt=Math.min(Math.max(g.row.time+hold,(g.children.at(-1)?.time??g.row.time)+.65),groups[index+1]?.row.time??Infinity);
+    return {...g,completeAt,complete:t>=completeAt,visible:g.children.filter(r=>r.time<=t)};
+  });
 }
 export function validateSettings(s){
   for(const [key,min,max] of [['width',320,3840],['height',240,2160],['mainSize',12,80],['actionSize',10,64],['padding',16,160],['speed',0.1,100],['tail',1,30]])if(!Number.isFinite(s[key])||s[key]<min||s[key]>max)throw Error(`${key} 超出允许范围 ${min}–${max}`);
   if(s.glowColor!==undefined&&(typeof s.glowColor!=='string'||!/^#[0-9a-f]{6}$/i.test(s.glowColor)))throw Error('发光颜色须为六位 HEX 色值，如 #80bfff');
   if(s.glowStrength!==undefined&&(!Number.isFinite(s.glowStrength)||s.glowStrength<0||s.glowStrength>100))throw Error('光晕强度须为 0–100');
+  if(s.thinkingHold!==undefined&&(!Number.isFinite(s.thinkingHold)||s.thinkingHold<.65||s.thinkingHold>30))throw Error('主行渐变时长须为 0.65–30 秒');
   if(s.typeColors!==undefined){
     if(!s.typeColors||typeof s.typeColors!=='object'||Array.isArray(s.typeColors))throw Error('类型配色须为颜色映射');
     for(const [type,color] of Object.entries(s.typeColors))if(!Object.hasOwn(defaultTypeColors,type)||typeof color!=='string'||!/^#[0-9a-f]{6}$/i.test(color))throw Error('类型配色须使用六位 HEX 色值，如 #91bdb2');

@@ -1,24 +1,9 @@
 id,scene,level,parent,timestamp,time,en,zh,shot,type
-crab-01,crab-vla,thinking,,00:00:00,0,[mission] target=shoreline; patrol session bound.,[mission] target=岸线；巡航任务已绑定。,crab-0,instruction
-crab-02,crab-vla,action,,00:00:00,0.6,[vision] Sand traversable. All eight leg actuators online.,[vision] 沙面可通行；八腿执行器全部在线。,crab-0.6,feed
-crab-03,crab-vla,thinking,,00:00:01,1.5,[policy] Prefer lateral routes. Forward compatibility is optional.,[policy] 优先选择横向路径；暂不兼容直着走。,crab-1.5,think
-crab-04,crab-vla,action,,00:00:02,2.4,[action] Execute crab.walk(sideways). Write tracks to the sandbox.,[action] 执行 crab.walk(横向)；足迹写入沙盘。,crab-2.4,action
-crab-05,crab-vla,action,,00:00:03,3.1,[odometry] Track database created. No cloud subscription required.,[odometry] 足迹数据库已建立；无需订阅地图服务。,crab-3.1,feed
-crab-06,crab-vla,thinking,,00:00:03,3.8,[policy] Adjust heading. Decouple body orientation from travel direction.,[policy] 微调航向；身体朝向与行进方向解耦。,crab-3.8,think
-crab-07,crab-vla,action,,00:00:04,4.5,[action] Rebalance leg threads. Lateral navigation remains healthy.,[action] 重新分配腿部线程；横向导航运行正常。,crab-4.5,action
-crab-08,crab-vla,action,,00:00:05,5.6,[vision] Foam detected. Ocean service preparing a full-state push.,[vision] 检测到浪花；海浪服务准备全量推送。,crab-5.6,feed
-crab-09,crab-vla,thinking,,00:00:06,6.2,[mission] target=foam; subscribe to the tidal event stream.,[mission] target=浪花；接入潮汐事件流。,crab-6.2,instruction
-crab-10,crab-vla,thinking,,00:00:06,6.8,[policy] Wave priority set to infinity. Suspend dryness guarantee.,[policy] 海浪优先级设为无穷大；暂停干燥承诺。,crab-6.8,think
-crab-11,crab-vla,action,,00:00:07,7.5,[action] Slow local motion. Keep all leg connections alive.,[action] 降低本地移速；八腿连接保持在线。,crab-7.5,action
-crab-12,crab-vla,action,,00:00:08,8.4,[environment] Water received. Sandbox promoted to swimming pool.,[environment] 首批海水抵达；沙盒升级为水池。,crab-8.4,feed
-crab-13,crab-vla,thinking,,00:00:09,9.4,[policy] Tracks dissolved. Fall back to on-site localization.,[policy] 足迹数据库溶解；回退到现场定位。,crab-9.4,think
-crab-14,crab-vla,action,,00:00:10,10.5,[action] Continue lateral motion. Waterproof mode initializing.,[action] 继续横向移动；防水运行模式初始化。,crab-10.5,action
-crab-15,crab-vla,action,,00:00:11,11.8,[tide] Second push incoming. Existing route leases expired.,[tide] 第二轮海水推送；旧路径租约失效。,crab-11.8,feed
-crab-16,crab-vla,thinking,,00:00:12,12.5,[mission] target=wading; switch to amphibious runtime.,[mission] target=涉水；切换水陆运行模式。,crab-12.5,instruction
-crab-17,crab-vla,thinking,,00:00:13,13.3,[policy] Retry dryness later. The ocean exposes no reject button.,[policy] 干燥任务稍后重试；海浪接口没有拒绝按钮。,crab-13.3,think
-crab-18,crab-vla,action,,00:00:14,14.2,[action] Lower posture. Reduce contention with the wave interface.,[action] 降低姿态；减少与海浪的接口冲突。,crab-14.2,action
-crab-19,crab-vla,action,,00:00:15,15.4,[environment] Water coverage increasing. Local coordinates overwritten.,[environment] 海水覆盖率上升；本地坐标被远程覆盖。,crab-15.4,feed
-crab-20,crab-vla,thinking,,00:00:16,16.2,[policy] Accept managed navigation. Preserve crab process liveness.,[policy] 接受托管导航；优先保持本蟹进程存活。,crab-16.2,think
-crab-21,crab-vla,thinking,,00:00:17,17.2,[mission] target=ocean; grant tidal takeover permissions.,[mission] target=海；提交潮汐接管权限。,crab-17.2,instruction
-crab-22,crab-vla,action,,00:00:18,18.2,[action] Ocean performing full takeover. Crab enters managed mode.,[action] 海浪正在全量接管；本蟹进入托管模式。,crab-18.2,action
-crab-23,crab-vla,action,,00:00:18,18.8,[reward] Ocean online. Eight legs still alive. Patrol checkpoint committed.,[reward] 海已上线，八腿仍在线；巡航检查点已提交。,crab-18.8,feed
+crab-vla-01,crab-vla,thinking,,00:00:00,0,[language] Task=shoreline patrol; prioritize staying dry.,[language] 任务=沿岸巡航；优先保持干燥。,crab-vla-0,think
+crab-vla-02,crab-vla,action,crab-vla-01,00:00:02,2.4,[action] Vision confirms traversable sand; eight legs execute lateral motion.,[action] 视觉确认沙面可通行；八腿执行横移。,crab-vla-2.4,action
+crab-vla-03,crab-vla,thinking,,00:00:05,5.6,[vision] Foam enters the path ahead; contact expected.,[vision] 浪花进入前方路径；预计发生接触。,crab-vla-5.6,think
+crab-vla-04,crab-vla,action,crab-vla-03,00:00:08,8.4,[feedback] Water has arrived; environment vetoed the dryness constraint.,[feedback] 海水已抵达；干燥约束被环境否决。,crab-vla-8.4,feed
+crab-vla-05,crab-vla,thinking,,00:00:10,10.5,[policy] Track localization failed; replan from the current water surface.,[policy] 足迹定位失效；根据当前水面重规划。,crab-vla-10.5,think
+crab-vla-06,crab-vla,action,crab-vla-05,00:00:12,12.5,[vision] A second wave approaches; available dry ground keeps shrinking.,[vision] 第二股浪花接近；可用干地继续缩小。,crab-vla-12.5,feed
+crab-vla-07,crab-vla,thinking,,00:00:14,14.2,[policy] Reduce movement speed; prioritize eight-legged support.,[policy] 下调移动速度；优先维持八腿支撑。,crab-vla-14.2,think
+crab-vla-08,crab-vla,action,crab-vla-07,00:00:17,17.2,[action] Wade with a low posture; temporarily hand navigation to the tide.,[action] 执行低姿态涉水；导航权暂交潮汐。,crab-vla-17.2,action

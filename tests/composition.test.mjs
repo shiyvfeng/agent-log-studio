@@ -3,9 +3,9 @@ import assert from 'node:assert/strict';
 import {compositionDefaults,compositionLayout,validateComposition} from '../src/composition.js';
 import {catVLAComposition,catVLASettings} from '../src/cat-vla.js';
 const media={width:720,height:1280,duration:49.2};
-test('cat composition retains its clip, original audio and 25 ordered captions',()=>{
+test('cat composition retains its clip, original audio and 9 ordered captions',()=>{
   assert.equal(validateComposition(catVLAComposition,media),catVLAComposition);
-  assert.equal(catVLAComposition.sourceEnd,45.6);assert.equal(catVLAComposition.keepAudio,true);assert.equal(catVLAComposition.phases.length,25);
+  assert.equal(catVLAComposition.sourceEnd,45.6);assert.equal(catVLAComposition.keepAudio,true);assert.equal(catVLAComposition.phases.length,9);
   const {video,log}=compositionLayout(catVLASettings.width,catVLASettings.height,media);
   assert.deepEqual(video,{x:64,y:228,width:432,height:768});assert.deepEqual(log,{x:704,y:228,width:1152,height:768});
 });

@@ -35,10 +35,9 @@ export function renderFrame(canvas,rows,s,t){
    lines.forEach((line,i)=>ctx.fillText(line,p,top+i*size*1.22));top+=lines.length*size*1.22+24;
  }
  const contentHeight=s.height-top-p;const items=[];let y=0;
- const all=groupStates(rows,t);
- all.forEach((g,index)=>{
-   const next=all[index+1];const completeAt=Math.min((g.children.at(-1)?.time??g.row.time)+.65,next?.row.time??Infinity);
-   const complete=t>=completeAt;
+ const all=groupStates(rows,t,s.thinkingHold);
+ all.forEach(g=>{
+   const {completeAt,complete}=g;
    const canFold=s.collapse&&g.row.level==='thinking';
    const fold=canFold&&complete?1-ease((t-completeAt)/.35):1;
    add(g.row,complete,g.row.level==='action',1);

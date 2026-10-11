@@ -9,3 +9,15 @@ test('reject malformed, orphan, empty, unordered and invalid clock input',()=>{f
 test('compression only modifies playback seconds, keeps copy and source timestamps',()=>{const edit=compressWaits(scene1);assert.equal(edit.at(-1).time,8);edit.forEach((r,i)=>{assert.equal(r.timestamp,scene1[i].timestamp);assert.equal(r.en,scene1[i].en);if(i)assert.ok(r.time-edit[i-1].time<=3);});});
 test('thought remains active through its last action appearance',()=>{assert.equal(groupStates(scene1,0)[0].complete,false);assert.equal(groupStates(scene1,1.7)[0].complete,true);assert.equal(groupStates(scene1,0)[0].visible.length,1);});
 test('reject broken grouping and unsupported canvas dimensions',()=>{assert.throws(()=>validateRows([{...scene1[1],parent:'missing'}]));assert.throws(()=>validateSettings({...defaults,width:321}));assert.equal(endTime(scene1,defaults)/2,8);});
+test('thinking hold preserves legacy timing, waits for children and hands over to the next thought',()=>{
+  const rows=readCSV('id,time,level,parent,en,type\np,0,thinking,,Plan,think\na,1,action,p,Act,action\nq,4,thinking,,Next,think\nb,8,action,q,Finish,action\nr,8.2,thinking,,New,think');
+  assert.equal(groupStates(rows,2)[0].complete,true);
+  assert.equal(groupStates(rows,2,3)[0].complete,false);
+  assert.equal(groupStates(rows,3,3)[0].complete,true);
+  assert.equal(groupStates(rows,7.5,3)[1].complete,false);
+  assert.equal(groupStates(rows,8.2,3)[1].complete,true);
+  assert.equal(groupStates(rows,10,3)[2].complete,false);
+  assert.equal(groupStates(rows,11.2,3)[2].complete,true);
+  for(const thinkingHold of [0,-1,31,NaN,'3'])assert.throws(()=>validateSettings({...defaults,thinkingHold}));
+  assert.doesNotThrow(()=>validateSettings({...defaults,thinkingHold:3}));
+});

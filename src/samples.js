@@ -5,4 +5,5 @@ export const samples = [
   {id:'basic',label:'基础模板 · 双层日志',file:'/samples/basic.csv'},
   {id:'cat-vla',label:'猫咪 VLA · 萝卜？纸巾？真棒！',file:'/samples/cat-vla.csv'},
   {id:'crab-vla',label:'螃蟹 VLA · 横向导航与潮汐热更新',file:'/samples/crab-vla.csv'},
+  {id:'tiger-vla',label:'老虎 VLA · 漂浮目标与水中抓取',file:'/samples/tiger-vla.csv'},
 ];
